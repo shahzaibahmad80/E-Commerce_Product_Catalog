@@ -1,0 +1,39 @@
+﻿@model List<E_Commerce_Product_Catalog.DTOs.ProductDTO>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-warning">No products found.</div>
+}
+else
+{
+    foreach (var p in Model)
+    {
+        <div class="card p-3 my-3 shadow-sm">
+
+            <div class="row">
+
+                <div class="col-md-2 text-center">
+                    <img src="@p.MainImage" class="img-fluid rounded" style="width:120px;height:auto;" />
+                </div>
+
+                <div class="col-md-8">
+                    <h5 class="fw-semibold">@p.Name</h5>
+                    <p class="mb-1">
+                        SKU: <span class="fw-semibold text-primary">@p.SKU</span>
+                        &nbsp;&nbsp;
+                        Stock: <span class="fw-semibold">@p.Stock</span>
+                        &nbsp;&nbsp;
+                        Category: <span class="fw-semibold">@p.CategoryName</span>
+                    </p>
+                    <p class="fw-bold fs-5 text-primary">Price: $@p.Price</p>
+                </div>
+
+                <div class="col-md-2 text-end">
+                    @await Html.PartialAsync("~/Views/Shared/_ProductActionButtons.cshtml", p.ProductId)
+                </div>
+
+            </div>
+
+        </div>
+    }
+}

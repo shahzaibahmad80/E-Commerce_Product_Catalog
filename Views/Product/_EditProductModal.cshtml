@@ -1,0 +1,130 @@
+﻿@model E_Commerce_Product_Catalog.Models.Product
+
+<div class="modal fade show" style="display:block;" id="editModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Details</h5>
+                <button class="btn-close" onclick="closeModal()"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <form id="editForm">
+
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                    <div class="row g-3">
+
+                        <div class="col-12">
+                            <label class="form-label">Product Name</label>
+                            <input name="Name" class="form-control" value="@Model.Name" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">SKU</label>
+                            <input class="form-control" value="@Model.SKU" readonly />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Stock</label>
+                            <input name="Stock" class="form-control" value="@Model.Stock" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select name="CategoryId" class="form-select">
+                                <option value="1" selected="@(Model.CategoryId ==1)">Brakes</option>
+                                <option value="2" selected="@(Model.CategoryId ==2)">Engine</option>
+                                <option value="3" selected="@(Model.CategoryId ==3)">Suspension</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Price</label>
+                            <input name="Price" class="form-control" value="@Model.Price" />
+                        </div>
+
+                        <div class="col-12">
+                            <label>Description</label>
+                            <textarea name="Description" class="form-control">@Model.Description</textarea>
+                        </div>
+
+                    </div>
+
+                </form>
+
+                <hr />
+
+                <div>
+                    <label class="form-label">Images</label>
+                    <div class="d-flex gap-2 flex-wrap" id="imageContainer">
+                        @foreach (var img in Model.Images)
+                        {
+                        <div class="position-relative border rounded p-1" style="width:120px;height:120px;">
+                            <img src="@img.ImageUrl" style="width:100%;height:100%;object-fit:cover;" />
+                            <button class="btn btn-sm btn-danger position-absolute" style="top:4px;right:4px;" onclick="deleteImage(@img.ImageId)">
+                            &times;
+                            </button>
+                        </div>
+                        }
+
+                        <div class="d-flex align-items-center justify-content-center border rounded" style="width:120px;height:120px;">
+                            <label class="w-100 h-100 text-center text-muted" style="cursor:pointer;">
+                            <input type="file" id="imageUploadInput" style="display:none;" />
+                            <div class="d-flex flex-column align-items-center justify-content-center">
+                                <i class="bi bi-cloud-upload fs-3"></i>
+                                <div class="small">Upload</div>
+                            </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary w-100" onclick="updateProduct()">Update</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('imageUploadInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var productId = @Model.ProductId;
+        var fd = new FormData();
+        fd.append('productId', productId);
+        fd.append('file', file);
+        fetch('/Product/UploadProductImage', { method: 'POST', body: fd })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    // append new image to container
+                    var div = document.createElement('div');
+                    div.className = 'position-relative border rounded p-1';
+                    div.style.width = '120px'; div.style.height = '120px';
+                    div.innerHTML = `<img src="${res.imageUrl}" style="width:100%;height:100%;object-fit:cover;" />` +
+                        `<button class="btn btn-sm btn-danger position-absolute" style="top:4px;right:4px;" onclick="deleteImage(${res.imageId})">&times;</button>`;
+                    document.getElementById('imageContainer').insertBefore(div, document.getElementById('imageContainer').lastElementChild);
+                }
+            });
+    });
+
+    function deleteImage(imageId) {
+        if (!confirm('Delete this image?')) return;
+        fetch('/Product/DeleteProductImage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageId: imageId })
+        }).then(r => r.json())
+            .then(res => {
+                if (res.success) location.reload();
+                else alert('Error deleting image');
+            });
+    }
+</script>

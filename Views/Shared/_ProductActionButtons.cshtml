@@ -1,0 +1,13 @@
+@model int
+
+<div class="d-flex justify-content-end">
+ <button class="btn btn-light border me-2" onclick="viewProduct(@Model)">
+ <i class="bi bi-eye"></i> <span class="ms-1 d-none d-md-inline">View</span>
+ </button>
+ <button class="btn btn-primary me-2" style="background:#0d6efd;border-color:#0d6efd;" onclick="editProduct(@Model)">
+ <i class="bi bi-pencil"></i> <span class="ms-1 d-none d-md-inline">Edit</span>
+ </button>
+ <button class="btn btn-danger" onclick="deleteProduct(@Model)">
+ <i class="bi bi-trash"></i> <span class="ms-1 d-none d-md-inline">Delete</span>
+ </button>
+</div>

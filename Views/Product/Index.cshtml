@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Product Catalog";
+}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">Product Catalog</h2>
+
+    <!-- FILTERS -->
+    <div class="card p-3 shadow-sm">
+        <h5 class="fw-semibold mb-3">Filter By</h5>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Name</label>
+                <input id="filterName" class="form-control" placeholder="Enter" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Price</label>
+                <input id="filterPrice" class="form-control" placeholder="Enter" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Category</label>
+                <select id="filterCategory" class="form-select">
+                    <option value="">Select</option>
+                    <option value="1">Brakes</option>
+                    <option value="2">Engine</option>
+                    <option value="3">Suspension</option>
+                </select>
+            </div>
+
+            <div class="col-12 text-end">
+                <button class="btn btn-primary px-4" onclick="loadProducts(1)">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT LIST -->
+    <div id="productListContainer" class="mt-4"></div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modalContainer"></div>
+
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}

@@ -1,0 +1,21 @@
+﻿@model int
+
+<div class="modal fade show" style="display:block;" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body text-center">
+
+                <h5 class="mb-3">Are you sure?</h5>
+                <p>This product will be permanently deleted.</p>
+
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button class="btn btn-danger" onclick="confirmDelete(@Model)">Delete</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
